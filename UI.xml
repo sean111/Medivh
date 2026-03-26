@@ -1,0 +1,133 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Font name="MedivhFontBig" font="Interface/AddOns/Medivh/Media/DORISPP.TTF" outline="NORMAL" virtual="true">
+        <Shadow>
+            <Offset>
+                <AbsDimension x="0" y="-1"/>
+            </Offset>
+            <Color r="0" g="0" b="0"/>
+        </Shadow>
+        <FontHeight>
+            <AbsValue val="16"/>
+        </FontHeight>
+        <Color r="1" g="1" b="1"/>
+    </Font>
+
+    <Font name="MedivhFont" font="Interface/AddOns/Medivh/Media/DORISPP.TTF" outline="NORMAL" virtual="true">
+        <Shadow>
+            <Offset>
+                <AbsDimension x="0" y="-1"/>
+            </Offset>
+            <Color r="0" g="0" b="0"/>
+        </Shadow>
+        <FontHeight>
+            <AbsValue val="12"/>
+        </FontHeight>
+        <Color r="1" g="0.8" b="0.1"/>
+    </Font>
+
+    <Frame name="MedivhFrame" parent="UIParent" frameStrata="DIALOG" topLevel="true" hidden="true">
+        <Size x="180" y="90"/>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentSpellName" parentKey="spellName" inherits="MedivhFontBig" justifyH="CENTER">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-55"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentSpellConfirm" parentKey="spellConfirm" inherits="MedivhFont" justifyH="CENTER" text="Press Enter to Cast Spell">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-75"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentSearchInfo" parentKey="searchInfo" inherits="MedivhFont" justifyH="CENTER" text="">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-100"/>
+                    </Anchors>
+                    <Color r="1" g="1" b="1"/>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentSpellButton" inherits="SecureActionButtonTemplate">
+                <Size x="48" y="48"/>
+                <Anchors>
+                    <Anchor point="TOP" relativePoint="TOP"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parentIcon" parentKey="icon" setAllPoints="true">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
+                                <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT"/>
+                            </Anchors>
+                            <TexCoords left="0.065" right="0.935" top="0.065" bottom="0.935"/>
+                        </Texture>
+                        <Texture name="$parentGloss" file="Interface\AddOns\Medivh\Media\Gloss" alphaMode="ADD">
+                            <Size x="68" y="68"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativePoint="CENTER" relativeKey="$parent.icon" x="0" y="0"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1" a="0.65"/>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="1">
+                        <Texture name="$parentBorder" parentKey="iconBorder" file="Interface\AddOns\Medivh\Media\Border">
+                            <Size x="76" y="76"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativePoint="CENTER" relativeKey="$parent.icon"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <!--https://github.com/Stanzilla/WoWUIBugs/issues/307-->
+                    <PreClick>
+                        self.savedVar = C_CVar.GetCVarBool("ActionButtonUseKeyDown")
+                        C_CVar.SetCVar("ActionButtonUseKeyDown", "0")
+                    </PreClick>
+                    <PostClick>
+                        C_CVar.SetCVar("ActionButtonUseKeyDown", self.savedVar and "1" or "0")
+                        CloseFrame()
+                    </PostClick>
+                </Scripts>
+            </Button>
+            <EditBox name="$parentSearch" inherits="SearchBoxTemplate" letters="60">
+                <Size x="170" y="20"/>
+                <Anchors>
+                    <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent" x="0" y="-75"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        SearchBoxTemplate_OnLoad(self);
+                        self.Instructions:SetText("Search Teleport or Portal");
+                    </OnLoad>
+                    <OnTextChanged function="OnTextChanged"/>
+                    <OnEscapePressed>
+                        OnEscapePressed(self);
+                    </OnEscapePressed>
+                    <OnEditFocusLost>
+                        OnEditFocusLost(self);
+                    </OnEditFocusLost>
+                    <OnEnterPressed>
+                        OnEnterPressed(self);
+                    </OnEnterPressed>
+                    <OnTabPressed function="OnTabPressed"/>
+                </Scripts>
+            </EditBox>
+        </Frames>
+
+        <Scripts>
+            <OnLoad>
+                tinsert(UISpecialFrames, self:GetName());
+            </OnLoad>
+            <OnHide>
+                CloseFrame();
+            </OnHide>
+        </Scripts>
+    </Frame>
+</Ui>

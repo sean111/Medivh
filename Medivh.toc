@@ -1,0 +1,12 @@
+## Interface: 120000
+## Title: Medivh
+## Notes: Helper for caasting portal and teleport spells
+## Author: Sean111
+## Version: 0.0.1
+## Category-enUS: Mage
+
+SpellsMainline.lua [AllowLoadGameType mainline]
+SpellsStandard.lua [AllowLoadGameType standard]
+Medivh.lua
+UI.xml
+
