@@ -1,0 +1,10 @@
+package-as: Medivh
+manual-changelog:
+  filename: CHANGES.md
+  markup-type: markdown
+ignore:
+  - README.md
+  - .idea
+  - .gitignore
+  - .editorconfig
+  - .luarc.json
