@@ -32,6 +32,12 @@ SpellList = {
 			portal = 446534,
 			alias = { "dor", "ww" },
 		},
+		{
+      -- Silvermoon City - Midnight
+      teleport = 1259190,
+      portal = 1259194,
+      alias = { "mk", "sc" }
+    }
 	},
 	Alliance = {
 		{ -- Stormwind
@@ -148,6 +154,6 @@ SpellList = {
 			teleport = 281404,
 			portal = 281402,
 			alias = { "da" },
-		},
+		}
 	},
 }
