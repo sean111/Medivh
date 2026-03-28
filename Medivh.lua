@@ -1,7 +1,6 @@
 local ADDON_NAME = 'Medivh'
-local ADDON_VERSION = "0.0.1"
 
--- Created a grame to handle events
+-- Created a frame to handle events
 ---@class Medivh : Frame
 ---@field availableSpells table[]
 ---@field playerFaction string
@@ -41,9 +40,10 @@ function medivh:OnPlayerLogin()
         availableSpells[#availableSpells + 1] = SpellList[self.playerFaction][i]
     end
 
-    print(ADDON_NAME .. " loaded.... use /pm or /medivh to start")
-    SLASH_MEDIVH1 = "/medivh"
-    SLASH_MEDIVH2 = "/mv"
+    print(ADDON_NAME .. " loaded: use /mv, /pm or /port to start")
+    SLASH_MEDIVH1 = "/mv"
+    SLASH_MEDIVH2 = "/pm"
+    SLASH_MEDIVH3 = "/port"
     SlashCmdList["MEDIVH"] = function(msg)
         self:HandleSlashCommand(msg)
     end
