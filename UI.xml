@@ -117,6 +117,7 @@
                         OnEnterPressed(self);
                     </OnEnterPressed>
                     <OnTabPressed function="OnTabPressed"/>
+                    <OnArrowPressed function="OnArrowPressed"/>
                 </Scripts>
             </EditBox>
         </Frames>

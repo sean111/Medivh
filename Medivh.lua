@@ -9,6 +9,8 @@ local ADDON_NAME = 'Medivh'
 ---@field autoSetPortal bool
 ---@field noResult bool
 ---@field tempBindingExists bool
+---@field spellMatches table[]
+---@field spellIndex int
 
 ---@type Medivh
 local medivh = CreateFrame("Frame")
@@ -19,6 +21,8 @@ medivh.portalSearch = false
 medivh.autoSetPortal = false
 medivh.noResult = true
 medivh.tempBindingExists = false
+medivh.spellMatches = {}
+medivh.spellIndex = 1
 
 medivh:SetScript("OnEvent", function(self, event, ...)
     if event == "PLAYER_LOGIN" then
@@ -192,19 +196,12 @@ function medivh:onTextChanged()
   medivh.noResult = true
 
   if strlen(searchText) > 0 then
-    local spellMatches = medivh:searchSpells(searchText)
-    if spellMatches and spellMatches[1] then
-      local match = spellMatches[1]
-      local spellInfo = C_Spell.GetSpellInfo(match.spellId)
-      --print(spellInfo.name);
-      --print(spellInfo.spellID)
-      --print(spellInfo.iconID)
-      MedivhFrameSpellName:SetText(spellInfo.name)
-      MedivhFrameSpellButton.icon:SetTexture(spellInfo.iconID)
-      MedivhFrameSpellButton:SetAttribute("type", "spell")
-      MedivhFrameSpellButton:SetAttribute("spell", spellInfo.name)
-      MedivhFrameSpellButton:Show()
+    medivh.spellMatches = medivh:searchSpells(searchText)
+    if medivh.spellMatches and medivh.spellMatches[1] then
+      local match = medivh.spellMatches[1]
+      medivh:activeSpell(match)
       medivh.noResult = false
+      medivh.spellIndex = 1
       return
     else
       MedivhFrameSpellName:SetText("No Result")
@@ -212,8 +209,20 @@ function medivh:onTextChanged()
     end
   else
     MedivhFrameSpellName:SetText("Enter spell name")
-      MedivhFrameSpellButton:Hide()
+    MedivhFrameSpellButton:Hide()
   end
+end
+
+function medivh:activeSpell(spell)
+    local spellInfo = C_Spell.GetSpellInfo(spell.spellId)
+    --print(spellInfo.name);
+    --print(spellInfo.spellID)
+    --print(spellInfo.iconID)
+    MedivhFrameSpellName:SetText(spellInfo.name)
+    MedivhFrameSpellButton.icon:SetTexture(spellInfo.iconID)
+    MedivhFrameSpellButton:SetAttribute("type", "spell")
+    MedivhFrameSpellButton:SetAttribute("spell", spellInfo.name)
+    MedivhFrameSpellButton:Show()
 end
 
 function medivh:createTempBinding()
@@ -294,6 +303,24 @@ function OnEnterPressed(self)
 
 end
 
+function OnArrowPressed(_self, key)
+  local len = #medivh.spellMatches
+  if key == "UP" then
+    if medivh.spellIndex == 1 then
+      medivh.spellIndex = len
+    else
+      medivh.spellIndex = medivh.spellIndex - 1
+    end
+    medivh:activeSpell(medivh.spellMatches[medivh.spellIndex])
+  elseif key == "DOWN" then
+    if medivh.spellIndex == len then
+      medivh.spellIndex = 1
+    else
+      medivh.spellIndex = medivh.spellIndex + 1
+    end
+    medivh:activeSpell(medivh.spellMatches[medivh.spellIndex])
+  end
+end
 
 -- Event registration
 medivh:RegisterEvent("PLAYER_LOGIN")
