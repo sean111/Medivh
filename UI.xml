@@ -26,6 +26,18 @@
         </FontHeight>
         <Color r="1" g="0.8" b="0.1"/>
     </Font>
+    <Font name="MedivhFontSmall" font="Interface/AddOns/Medivh/Media/DORISPP.TTF" outline="NORMAL" virtual="true">
+        <Shadow>
+            <Offset>
+                <AbsDimension x="0" y="-1"/>
+            </Offset>
+            <Color r="0" g="0" b="0"/>
+        </Shadow>
+        <FontHeight>
+            <AbsValue val="10"/>
+        </FontHeight>
+        <Color r="1" g="0.8" b="0.1"/>
+    </Font>
 
     <Frame name="MedivhFrame" parent="UIParent" frameStrata="DIALOG" topLevel="true" hidden="true">
         <Size x="180" y="90"/>
@@ -49,6 +61,12 @@
                         <Anchor point="TOP" x="0" y="-100"/>
                     </Anchors>
                     <Color r="1" g="1" b="1"/>
+                </FontString>
+                <FontString name="$parentCycleHint" parentKey="cycleHint" inherits="MedivhFontSmall" justifyH="CENTER" text="">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-115"/>
+                    </Anchors>
+                    <Color r="0.9" g="0.9" b="0.9"/>
                 </FontString>
             </Layer>
         </Layers>

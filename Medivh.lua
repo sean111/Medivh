@@ -197,6 +197,13 @@ function medivh:onTextChanged()
 
   if strlen(searchText) > 0 then
     medivh.spellMatches = medivh:searchSpells(searchText)
+    local matchCount = #medivh.spellMatches
+    if matchCount > 1 then
+      medivh:setCycleText(1, matchCount)
+      MedivhFrame.cycleHint:Show()
+    else
+      MedivhFrame.cycleHint:Hide()
+    end
     if medivh.spellMatches and medivh.spellMatches[1] then
       local match = medivh.spellMatches[1]
       medivh:activeSpell(match)
@@ -241,6 +248,10 @@ function medivh:removeTempBinding()
   MedivhFrameSpellButton:SetAttribute("type", nil)
   MedivhFrameSpellButton:SetAttribute("spell", nil)
   medivh.tempBindingExists = false
+end
+
+function medivh:setCycleText(current, max)
+  MedivhFrame.cycleHint:SetText(string.format("Use Up/Down to cycle (%d / %d)", current, max))
 end
 
 
@@ -299,6 +310,7 @@ function OnEnterPressed(self)
 
   MedivhFrameSearch:Hide()
   MedivhFrame.searchInfo:Hide()
+  MedivhFrame.cycleHint:Hide()
   MedivhFrameSpellConfirm:Show()
 
 end
@@ -311,15 +323,15 @@ function OnArrowPressed(_self, key)
     else
       medivh.spellIndex = medivh.spellIndex - 1
     end
-    medivh:activeSpell(medivh.spellMatches[medivh.spellIndex])
   elseif key == "DOWN" then
     if medivh.spellIndex == len then
       medivh.spellIndex = 1
     else
       medivh.spellIndex = medivh.spellIndex + 1
     end
-    medivh:activeSpell(medivh.spellMatches[medivh.spellIndex])
   end
+  medivh:activeSpell(medivh.spellMatches[medivh.spellIndex])
+  medivh:setCycleText(medivh.spellIndex, len)
 end
 
 -- Event registration
