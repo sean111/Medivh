@@ -1,4 +1,4 @@
-## Interface: 120000
+## Interface: 120005
 ## Title: Medivh
 ## Notes: Helper for casting portal and teleport spells
 ## Author: Sean111
@@ -9,4 +9,3 @@
 SpellsLive.lua [AllowLoadGameType mainline, standard]
 Medivh.lua
 UI.xml
-
