@@ -1,4 +1,4 @@
-## Interface: 120005
+## Interface: 120100
 ## Title: Medivh
 ## Notes: Helper for casting portal and teleport spells
 ## Author: Sean111
